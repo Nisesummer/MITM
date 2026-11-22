@@ -1,0 +1,14 @@
+name: 个人去广告与 MitM 覆写
+desc: 个人 Stash MitM 重写与去广告规则（哈啰广告接口与 Sigmob SDK）
+
+http:
+  mitm:
+    - "api.hellobike.com"
+
+  url-rewrite:
+    # 哈啰（App / 支付宝小程序）：自家广告平台的广告下发与曝光回传（开屏等广告位）
+    - '^https://api\.hellobike\.com/api\?adx\.ssp\.(show|callback) - reject-dict'
+
+rules:
+  # 哈啰 App 内置的第三方广告 SDK：Sigmob（穿山甲、广点通已由通用广告规则拦截）
+  - DOMAIN-SUFFIX,sigmob.cn,REJECT
