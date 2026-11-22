@@ -5,7 +5,7 @@
 ## 订阅链接
 
 ```
-https://raw.githubusercontent.com/Nisesummer/qx-rules/main/rewrite.stoverride
+https://raw.githubusercontent.com/Nisesummer/MITM/main/rewrite.stoverride
 ```
 
 ## Stash 使用方式
