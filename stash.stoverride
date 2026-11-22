@@ -1,0 +1,173 @@
+# 自动生成文件，请勿手动编辑（修改个人规则请改 rewrite.stoverride）
+# 由 GitHub Actions 定时同步上游并生成
+name: 个人综合去广告与净化（自动同步）
+desc: 自动合并个人规则(rewrite.stoverride) + 网易云音乐 + 墨迹天气 + YouTube(隐藏Shorts) + 贴吧去广告
+rules:
+- DOMAIN-SUFFIX,sigmob.cn,REJECT
+- DOMAIN-SUFFIX,adlaunch.moji.com,REJECT
+- DOMAIN,180.76.76.200,REJECT
+- IP-CIDR,180.76.76.200/32,REJECT,no-resolve
+http:
+  mitm:
+  - api.hellobike.com
+  - interface*.music.163.com
+  - '*.api.moji.com'
+  - tnc*-*.zijieapi.com
+  - -redirector*.googlevideo.com
+  - '*.googlevideo.com'
+  - www.youtube.com
+  - s.youtube.com
+  - youtubei.googleapis.com
+  - tiebac.baidu.com
+  url-rewrite:
+  - ^https://api\.hellobike\.com/api\?adx\.ssp\.(show|callback) - reject-dict
+  - ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/content\/activity\/music\/jar\/template\/list - reject-200
+  - ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/sp\/flow\/popup\/query - reject-200
+  - ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vipmall\/couponcfg\/get - reject-200
+  - ^https?:\/\/interface(\d)?\.music\.163\.com\/w?eapi\/(resource-exposure\/)?activity - reject-200
+  - ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/comment\/feed\/inserted\/resources - reject-200
+  - ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/resource-exposure\/config - reject-200
+  - ^https?:\/\/.*api\.moji\.com\/flycard\/flyCard - reject-200
+  - ^https?:\/\/.*api\.moji\.com\/shortvideo - reject-200
+  - ^https?:\/\/.*api\.moji\.com\/json\/advertising_goods - reject-200
+  - ^https?:\/\/.*api\.moji\.com\/forum - reject-200
+  - ^https?:\/\/.*api\.moji\.com\/user\/dynamic_v\d\/json\/someone_interest - reject-200
+  - ^https:\/\/tnc.*zijieapi\.com\/get_domains - reject-200
+  - (^https?:\/\/[\w-]+\.googlevideo\.com\/(?!dclk_video_ads).+?)&ctier=L(&.+?),ctier,(.+) $1$2$3 302
+  - ^https?:\/\/[\w-]+\.googlevideo\.com\/(?!(dclk_video_ads|videoplayback\?)).+&oad - reject-200
+  - ^https?:\/\/(www|s)\.youtube\.com\/api\/stats\/ads - reject-200
+  - ^https?:\/\/(www|s)\.youtube\.com\/(pagead|ptracking) - reject-200
+  - ^https?:\/\/s\.youtube\.com\/api\/stats\/qoe\?adcontext - reject-200
+  script:
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/home\/framework\/tab
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/page\/discovery\/resource\/show
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/page\/rcmd\/resource\/show
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ios\/upgrade\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/default\/keyword\/list
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/rcmd\/keyword\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/chart\/list
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/chart\/detail
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/suggest\/keyword\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/search\/specialkeyword\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/loading\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/loading\/current
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/ad\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/position\/show\/resource
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/link\/scene\/show\/resource
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vip\/cashier\/tspopup\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/vipnewcenter\/app\/resource\/newaccountpage
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/side-bar\/mini-program\/music-service\/account
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/delivery\/deliver
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/delivery\/batch-deliver
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/yunbei\/account\/entrance\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/creator\/musician\/reminder\/message\/get
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/interface(\d)?\.music\.163\.com\/e?api\/batch
+    name: neteaseads-netease-adblock
+    type: response
+    require-body: true
+  - match: ^https?:\/\/.*api\.moji\.com\/json\/entrance\/list
+    name: moji-entrance-moji-entrance
+    type: response
+    require-body: true
+  - match: ^https?:\/\/youtubei\.googleapis\.com\/youtubei\/v1\/(browse|next|player|search|reel\/reel_watch_sequence|guide|account\/get_setting|get_watch)
+    name: youtube-hideshorts-youtube-response
+    type: response
+    require-body: true
+    binary-mode: true
+    max-size: -1
+    timeout: 60
+    argument: '{"lyricLang":"off","captionLang":"off","blockUpload":true,"blockImmersive":false,"blockShorts":true,"debug":false}'
+  - match: ^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/(c\/(s\/sync|f\/(ad\/getSplashAd|frs\/(page|threadlist|generalTabList)|pb\/(pic)?page|excellent\/personalized))$|tiebaads\/commonbatch\?)
+    name: tiebaads-tieba-json
+    type: response
+    require-body: true
+    max-size: 0
+  - match: ^https?:\/\/(tiebac|c\.tieba)\.baidu\.com\/c\/(b\/ad\/adBid|f\/(frs\/(page|threadlist|generalTabList)|ad\/getFeedAd|pb\/page|excellent\/personalized))\?cmd
+    name: tiebaads-tieba-proto
+    type: response
+    require-body: true
+    binary-mode: true
+    max-size: -1
+    argument: per_filter_video_thread=0
+script-providers:
+  neteaseads-netease-adblock:
+    url: https://gist.githubusercontent.com/ddgksf2013/4f53b7c6083678df25fecc8ff68b52c4/raw/netease.adblock.js
+    interval: 86400
+  moji-entrance-moji-entrance:
+    url: https://raw.githubusercontent.com/Nisesummer/MITM/main/scripts/moji-entrance.js
+    interval: 86400
+  youtube-hideshorts-youtube-response:
+    url: https://raw.githubusercontent.com/Aioneas/Surge/main/Script/youtube.response.js
+    interval: 86400
+  tiebaads-tieba-json:
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/tieba-json.js
+    interval: 86400
+  tiebaads-tieba-proto:
+    url: https://raw.githubusercontent.com/app2smile/rules/master/js/tieba-proto.js
+    interval: 86400
