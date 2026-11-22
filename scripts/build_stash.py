@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 import urllib.request
 from pathlib import Path
@@ -21,6 +22,9 @@ OUTPUT_FILE = REPO_ROOT / "stash.stoverride"
 MOJI_ENTRANCE_JS_URL = (
     "https://raw.githubusercontent.com/Nisesummer/MITM/main/scripts/moji-entrance.js"
 )
+BODY_REPLACE_JS_URL = (
+    "https://raw.githubusercontent.com/Nisesummer/MITM/main/scripts/body-replace.js"
+)
 
 UPSTREAMS = [
     (
@@ -32,6 +36,21 @@ UPSTREAMS = [
         "qx",
         "MoJiWeatherAds",
         "https://raw.githubusercontent.com/ddgksf2013/Rewrite/refs/heads/master/AdBlock/MoJiWeatherAds.conf",
+    ),
+    (
+        "qx",
+        "AmapAds",
+        "https://raw.githubusercontent.com/ddgksf2013/Rewrite/master/AdBlock/AmapAds.conf",
+    ),
+    (
+        "qx",
+        "Applet",
+        "https://raw.githubusercontent.com/ddgksf2013/Rewrite/master/AdBlock/Applet.conf",
+    ),
+    (
+        "qx",
+        "StartUpAds",
+        "https://ddgksf2013.top/rewrite/StartUpAds.conf",
     ),
     (
         "sgmodule",
@@ -47,8 +66,8 @@ UPSTREAMS = [
 
 
 def fetch_text(url: str) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=20) as resp:
+    req = urllib.request.Request(url, headers={"User-Agent": "Quantumult%20X/1.5.5"})
+    with urllib.request.urlopen(req, timeout=25) as resp:
         return resp.read().decode("utf-8", errors="replace")
 
 
@@ -172,6 +191,21 @@ class StashBuilder:
                     if "proto" in arg.lower():
                         entry["binary-mode"] = True
                     self.add_script(entry)
+                elif action == "response-body" and " response-body " in arg:
+                    find_pat, rep_val = arg.split(" response-body ", 1)
+                    prov = self.register_provider(BODY_REPLACE_JS_URL, "body-replace")
+                    self.add_script(
+                        {
+                            "match": pattern,
+                            "name": prov,
+                            "type": "response",
+                            "require-body": True,
+                            "argument": json.dumps(
+                                {"find": find_pat.strip(), "replace": rep_val.strip()},
+                                ensure_ascii=False,
+                            ),
+                        }
+                    )
                 elif action == "jsonjq-response-body" and "entrance_region_res_list" in arg:
                     prov = self.register_provider(MOJI_ENTRANCE_JS_URL, "moji-entrance")
                     self.add_script(
@@ -340,7 +374,7 @@ class StashBuilder:
     def build_yaml(self) -> str:
         doc: dict[str, Any] = {
             "name": "个人综合去广告与净化（自动同步）",
-            "desc": "自动合并个人规则(rewrite.stoverride) + 网易云音乐 + 墨迹天气 + YouTube(隐藏Shorts) + 贴吧去广告",
+            "desc": "自动合并个人规则 + 网易云 + 墨迹天气 + 高德 + 小程序 + 开屏合集 + YouTube(隐藏Shorts) + 贴吧去广告",
             "rules": self.rules,
             "http": {
                 "mitm": self.mitm,
