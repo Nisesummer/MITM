@@ -374,7 +374,6 @@ class StashBuilder:
     def build_yaml(self) -> str:
         doc: dict[str, Any] = {
             "name": "个人综合去广告与净化（自动同步）",
-            "desc": "自动合并个人规则 + 网易云 + 墨迹天气 + 高德 + 小程序 + 开屏合集 + YouTube(隐藏Shorts) + 贴吧去广告",
             "rules": self.rules,
             "http": {
                 "mitm": self.mitm,

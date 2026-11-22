@@ -1,5 +1,4 @@
 name: 个人去广告与 MitM 覆写
-desc: 个人 Stash MitM 重写与去广告规则（哈啰广告接口与 Sigmob SDK）
 
 http:
   mitm:

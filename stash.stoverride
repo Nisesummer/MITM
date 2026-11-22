@@ -1,7 +1,6 @@
 # 自动生成文件，请勿手动编辑（修改个人规则请改 rewrite.stoverride）
 # 由 GitHub Actions 定时同步上游并生成
 name: 个人综合去广告与净化（自动同步）
-desc: 自动合并个人规则 + 网易云 + 墨迹天气 + 高德 + 小程序 + 开屏合集 + YouTube(隐藏Shorts) + 贴吧去广告
 rules:
 - DOMAIN-SUFFIX,sigmob.cn,REJECT
 - DOMAIN-SUFFIX,adlaunch.moji.com,REJECT
