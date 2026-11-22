@@ -1,23 +1,5 @@
-name: 个人去广告、DNS 与 MitM 覆写
-desc: 个人 Stash DNS（含 STUN 放行）、MitM 重写与去广告规则
-
-dns:
-  enable: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
-  default-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-  nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  fake-ip-filter:
-    - '*.lan'
-    - 'geosite:private'
-    - '+.stun.*.*'
-    - '+.stun.*.*.*'
-    - '+.stun.*.*.*.*'
-    - '+.stun.*.*.*.*.*'
+name: 个人去广告与 MitM 覆写
+desc: 个人 Stash MitM 重写与去广告规则（哈啰广告接口与 Sigmob SDK）
 
 http:
   mitm:
