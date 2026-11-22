@@ -11,7 +11,6 @@ rules:
 - DOMAIN-SUFFIX,iyes.youku.com,REJECT
 - DOMAIN-SUFFIX,innoads.cn,REJECT
 - DOMAIN-SUFFIX,adlog-ztjy.szy.cn,REJECT
-- DOMAIN,180.76.76.200,REJECT
 - IP-CIDR,180.76.76.200/32,REJECT,no-resolve
 http:
   mitm:

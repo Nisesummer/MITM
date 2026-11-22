@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import hashlib
+import ipaddress
 import json
 import re
 import urllib.request
@@ -89,7 +90,18 @@ class StashBuilder:
 
     def add_rule(self, rule: str) -> None:
         rule = rule.strip()
-        if rule and rule not in self.rules:
+        if not rule:
+            return
+        parts = [p.strip() for p in rule.split(",")]
+        if len(parts) >= 3 and parts[0].upper() in ("DOMAIN", "DOMAIN-SUFFIX"):
+            try:
+                ip = ipaddress.ip_address(parts[1])
+                cidr = f"{ip}/32" if ip.version == 4 else f"{ip}/128"
+                kind = "IP-CIDR" if ip.version == 4 else "IP-CIDR6"
+                rule = f"{kind},{cidr},{parts[2]},no-resolve"
+            except ValueError:
+                pass
+        if rule not in self.rules:
             self.rules.append(rule)
 
     def add_rewrite(self, line: str) -> None:
